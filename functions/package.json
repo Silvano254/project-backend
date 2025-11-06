@@ -12,7 +12,7 @@
     "serve": "node ./node_modules/firebase-functions/lib/bin/functionsEmulator.js",
     "lint": "echo 'No lint configured'",
     "test": "node -e \"console.log('No tests yet')\"",
-    "seed": "node scripts/seed.js",
+    "setup-admin": "node src/scripts/setupAdmin.js",
     "deploy": "firebase deploy --only functions"
   },
   "dependencies": {
