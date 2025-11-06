@@ -13,6 +13,7 @@
     "lint": "echo 'No lint configured'",
     "test": "node -e \"console.log('No tests yet')\"",
     "setup-admin": "node src/scripts/setupAdmin.js",
+    "get-otp": "node src/scripts/getOtp.js",
     "deploy": "firebase deploy --only functions"
   },
   "dependencies": {
