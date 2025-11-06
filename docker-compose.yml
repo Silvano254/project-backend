@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  api:
+    build: .
+    ports:
+      - "5001:5001"
+    environment:
+      - NODE_ENV=production
+      - PORT=5001
+    env_file:
+      - .env
+    depends_on:
+      - mongo
+    restart: unless-stopped
+    networks:
+      - jirani-network
+
+  mongo:
+    image: mongo:7
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=changeme
+      - MONGO_INITDB_DATABASE=jirani_mwema
+    volumes:
+      - mongo-data:/data/db
+    restart: unless-stopped
+    networks:
+      - jirani-network
+
+volumes:
+  mongo-data:
+
+networks:
+  jirani-network:
+    driver: bridge
