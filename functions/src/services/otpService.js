@@ -6,6 +6,9 @@ async function sendOtp(phone) {
   const code = generate(6);
   const expiresAt = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes
 
+  // Log OTP for debugging (especially when SMS fails due to blacklist)
+  console.log(`📱 OTP Generated for ${phone}: ${code} (expires in 5 minutes)`);
+
   // Invalidate previous unused codes
   await OtpCode.updateMany({ phone, used: false }, { $set: { used: true } });
   await OtpCode.create({ phone, code, expiresAt });
@@ -13,9 +16,11 @@ async function sendOtp(phone) {
   // Try to send SMS; do not fail the OTP issuance if SMS integration isn't ready yet.
   try {
     await smsService.sendSms({ to: phone, message: `Your Jirani Mwema OTP is ${code}` });
+    console.log(`✓ SMS sent successfully to ${phone}`);
   } catch (err) {
     // eslint-disable-next-line no-console
     console.warn('SMS send failed (continuing):', err.message);
+    console.log(`⚠ OTP for ${phone} (SMS failed): ${code}`);
   }
 
   // Return OTP code for WhatsApp fallback
