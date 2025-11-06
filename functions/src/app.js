@@ -10,6 +10,10 @@ const transactionRoutes = require('./routes/transactionRoutes');
 const proxyRoutes = require('./routes/proxyRoutes');
 const notificationRoutes = require('./routes/notificationRoutes');
 const meetingRoutes = require('./routes/meetingRoutes');
+const approvalRoutes = require('./routes/approvalRoutes');
+const reportRoutes = require('./routes/reportRoutes');
+const welfareRoutes = require('./routes/welfareRoutes');
+const loanRoutes = require('./routes/loanRoutes');
 
 function createApp() {
   loadEnv();
@@ -42,6 +46,10 @@ function createApp() {
   app.use('/api/proxies', proxyRoutes);
   app.use('/api/notifications', notificationRoutes);
   app.use('/api/meetings', meetingRoutes);
+  app.use('/api/approvals', approvalRoutes);
+  app.use('/api/reports', reportRoutes);
+  app.use('/api/welfare', welfareRoutes);
+  app.use('/api/loans', loanRoutes);
   app.use('/api/showcase', showcaseRoutes);
 
   // 404 handler
