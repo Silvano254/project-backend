@@ -4,13 +4,15 @@ const {
   createUser, 
   updateBiometricSettings, 
   getBiometricSettings,
-  getUserProfile 
+  getUserProfile,
+  updateUserProfile
 } = require('../controllers/userController');
 const router = express.Router();
 
 router.get('/', listUsers);
 router.post('/', createUser);
 router.get('/profile', getUserProfile);
+router.put('/update', updateUserProfile);
 router.get('/biometric', getBiometricSettings);
 router.put('/biometric', updateBiometricSettings);
 

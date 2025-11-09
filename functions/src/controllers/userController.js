@@ -105,11 +105,59 @@ async function getUserProfile(req, res, next) {
   }
 }
 
+async function updateUserProfile(req, res, next) {
+  try {
+    const { userId, name, phoneNumber } = req.body;
+    
+    if (!userId) {
+      return res.status(400).json({ message: 'User ID required' });
+    }
+
+    const updateData = {};
+    if (name) updateData.name = name;
+    if (phoneNumber) {
+      // Check if new phone number already exists for another user
+      const existingUser = await User.findOne({ 
+        phone: phoneNumber, 
+        _id: { $ne: userId } 
+      });
+      if (existingUser) {
+        return res.status(409).json({ message: 'Phone number already in use' });
+      }
+      updateData.phone = phoneNumber;
+    }
+
+    const user = await User.findByIdAndUpdate(
+      userId,
+      updateData,
+      { new: true, runValidators: true }
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.json({ 
+      success: true,
+      data: {
+        userId: user._id,
+        name: user.name,
+        phone: user.phone,
+        role: user.role,
+      },
+      message: 'Profile updated successfully'
+    });
+  } catch (err) {
+    next(err);
+  }
+}
+
 module.exports = { 
   listUsers, 
   createUser, 
   updateBiometricSettings, 
   getBiometricSettings,
-  getUserProfile 
+  getUserProfile,
+  updateUserProfile
 };
 
